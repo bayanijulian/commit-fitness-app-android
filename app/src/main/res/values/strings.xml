@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GlassKoala</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
 </resources>

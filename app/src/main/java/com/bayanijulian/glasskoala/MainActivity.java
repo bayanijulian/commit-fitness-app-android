@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         goalsList.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
 
-        GoalsAdapater goalsAdapater = new GoalsAdapater(mockGoalsData());
-        goalsList.setAdapter(goalsAdapater);
+        GoalsAdapter goalsAdapter = new GoalsAdapter(mockGoalsData());
+        goalsList.setAdapter(goalsAdapter);
 
         createGoalFab = findViewById(R.id.activity_main_fab_create_goal);
         createGoalFab.setOnClickListener(new View.OnClickListener() {

@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GoalsAdapater extends RecyclerView.Adapter<GoalsAdapater.ViewHolder> {
+public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> {
     private List<Goal> goals;
 
-    public GoalsAdapater(Goal [] goals) {
+    public GoalsAdapter(Goal [] goals) {
         this.goals = new ArrayList<>();
         this.goals.addAll(Arrays.asList(goals));
     }
