@@ -6,4 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".CreateGoalActivity">
 
+
+    <Button
+        android:id="@+id/activity_create_goal_btn_location"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Choose a Location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

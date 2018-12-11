@@ -7,7 +7,7 @@ package com.bayanijulian.glasskoala;
  */
 public class Goal {
     /**
-     * Unique Identifier in the database
+     * Unique Identifier used in Firebase Realtime Database
      */
     private String id;
     /**
@@ -21,25 +21,36 @@ public class Goal {
     /**
      * The name of the gym
      */
-    private String location;
+    private String locationName;
     /**
      * The number of minutes spent
      */
     private long duration;
-
+    /**
+     * The Place ID to retrieve more information from Places SDK by Google
+     */
+    private String placeId;
 
     public Goal() {
         this.date = "";
         this.time = "";
-        this.location = "";
+        this.locationName = "";
         this.duration = 0;
     }
 
-    public Goal(String date, String time, String location, long duration) {
+    public Goal(String date, String time, String locationName, long duration) {
         this.date = date;
         this.time = time;
-        this.location = location;
+        this.locationName = locationName;
         this.duration = duration;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDate() {
@@ -59,12 +70,12 @@ public class Goal {
         this.time = time;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLocationName() {
+        return locationName;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public long getDuration() {
@@ -73,5 +84,13 @@ public class Goal {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 }

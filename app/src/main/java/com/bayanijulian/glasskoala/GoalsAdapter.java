@@ -31,7 +31,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Goal goal = goals.get(i);
-        viewHolder.locationTxt.setText(goal.getLocation());
+        viewHolder.locationTxt.setText(goal.getLocationName());
         viewHolder.dateTxt.setText(goal.getDate());
         viewHolder.timeTxt.setText(goal.getTime());
         String durationOutput = String.valueOf(goal.getDuration()) + " minutes";
