@@ -7,11 +7,15 @@ package com.bayanijulian.glasskoala;
  */
 public class Goal {
     /**
-     * Represents the start date in the format of MM/DD/YYYY
+     * Unique Identifier in the database
+     */
+    private String id;
+    /**
+     * Start date in the format of MM/DD/YYYY
      */
     private String date;
     /**
-     * Represents the start time in the format of HH:MM AM
+     * Start time in the format of HH:MM AM
      */
     private String time;
     /**
@@ -22,6 +26,7 @@ public class Goal {
      * The number of minutes spent
      */
     private long duration;
+
 
     public Goal() {
         this.date = "";
