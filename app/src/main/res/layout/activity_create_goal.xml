@@ -19,14 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/activity_create_goal_spinner_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/activity_create_goal_btn_time"
-        app:layout_constraintTop_toBottomOf="@+id/activity_create_goal_btn_time" />
-
     <Button
         android:id="@+id/activity_create_goal_btn_date"
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -38,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_create_goal_btn_location" />
 
     <Button
-        android:id="@+id/activity_create_goal_btn_time"
+        android:id="@+id/activity_create_goal_btn_start_time"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,28 +64,28 @@
         app:layout_constraintTop_toTopOf="@+id/activity_create_goal_btn_date" />
 
     <TextView
-        android:id="@+id/activity_create_goal_tv_time"
+        android:id="@+id/activity_create_goal_tv_start_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:text="Time:"
+        android:text="Start Time:"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_create_goal_btn_time"
-        app:layout_constraintEnd_toStartOf="@+id/activity_create_goal_btn_time"
-        app:layout_constraintTop_toTopOf="@+id/activity_create_goal_btn_time" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_create_goal_btn_start_time"
+        app:layout_constraintEnd_toStartOf="@+id/activity_create_goal_btn_start_time"
+        app:layout_constraintTop_toTopOf="@+id/activity_create_goal_btn_start_time" />
 
     <TextView
-        android:id="@+id/activity_create_goal_tv_duration"
+        android:id="@+id/activity_create_goal_tv_end_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:text="Duration:"
+        android:text="End Time:"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_create_goal_spinner_duration"
-        app:layout_constraintEnd_toStartOf="@+id/activity_create_goal_spinner_duration"
-        app:layout_constraintTop_toTopOf="@+id/activity_create_goal_spinner_duration" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_create_goal_btn_end_time"
+        app:layout_constraintEnd_toStartOf="@+id/activity_create_goal_btn_end_time"
+        app:layout_constraintTop_toTopOf="@+id/activity_create_goal_btn_end_time" />
 
     <Button
         android:id="@+id/activity_create_goal_btn_save"
@@ -106,5 +98,29 @@
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="248dp"
+        android:layout_height="139dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/activity_create_goal_btn_end_time"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Set Time"
+        app:layout_constraintStart_toStartOf="@+id/activity_create_goal_btn_start_time"
+        app:layout_constraintTop_toBottomOf="@+id/activity_create_goal_btn_start_time" />
 
 </android.support.constraint.ConstraintLayout>

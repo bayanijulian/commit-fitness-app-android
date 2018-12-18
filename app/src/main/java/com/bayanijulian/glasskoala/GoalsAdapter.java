@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bayanijulian.glasskoala.model.Goal;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,13 +33,11 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Goal goal = goals.get(i);
-        viewHolder.locationTxt.setText(goal.getLocationName());
+        viewHolder.locationTxt.setText(goal.getLocation().getName());
         viewHolder.dateTxt.setText(goal.getDate());
-        viewHolder.timeTxt.setText(goal.getTime());
+        viewHolder.timeTxt.setText(goal.getStartTime());
         String durationOutput = String.valueOf(goal.getDuration()) + " minutes";
         viewHolder.durationTxt.setText(durationOutput);
-
-
     }
 
     @Override

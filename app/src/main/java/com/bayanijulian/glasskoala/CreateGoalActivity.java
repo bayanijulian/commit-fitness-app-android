@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +13,32 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
+import com.bayanijulian.glasskoala.model.Goal;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.location.places.PlacePhotoResponse;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+
+import static java.text.DateFormat.SHORT;
 
 public class CreateGoalActivity extends AppCompatActivity {
     private static final String TAG = CreateGoalActivity.class.getSimpleName();
@@ -30,8 +46,11 @@ public class CreateGoalActivity extends AppCompatActivity {
 
     private Button locationBtn;
     private Button dateBtn;
-    private Button timeBtn;
-    private Spinner durationSpinner;
+    private Button startTimeBtn;
+    private Button endTimeBtn;
+    private Button saveBtn;
+    private ImageView imgView;
+    private Goal goal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,21 +73,40 @@ public class CreateGoalActivity extends AppCompatActivity {
             }
         });
 
-        timeBtn = findViewById(R.id.activity_create_goal_btn_time);
-        timeBtn.setOnClickListener(new View.OnClickListener() {
+        startTimeBtn = findViewById(R.id.activity_create_goal_btn_start_time);
+        startTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectTime();
+                selectTime(v);
             }
         });
 
+        endTimeBtn = findViewById(R.id.activity_create_goal_btn_end_time);
+        endTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTime(v);
+            }
+        });
+
+        saveBtn = findViewById(R.id.activity_create_goal_btn_save);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
+
+        imgView = findViewById(R.id.imageView);
+
+        goal = new Goal();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_PLACE_PICKER) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 Place place = PlacePicker.getPlace(this, data);
                 Log.d(TAG, "Successfully selected a location, Name: " + place.getName()
                 + " , ID: " + place.getId());
@@ -77,6 +115,10 @@ public class CreateGoalActivity extends AppCompatActivity {
                 Log.d(TAG, "Failed to select a location.");
             }
         }
+    }
+
+    private void save() {
+        Log.d(TAG, "Saving Goal");
     }
 
     private void selectLocation() {
@@ -100,19 +142,19 @@ public class CreateGoalActivity extends AppCompatActivity {
         ((DatePickerFragment) datePickerFragment).setListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                loadDate(view);
+                loadDate(year, month, dayOfMonth);
             }
         });
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    private void selectTime() {
+    private void selectTime(final View v) {
         Log.d(TAG, "Attempting to select a time");
         DialogFragment timePickerFragment = new TimePickerFragment();
         ((TimePickerFragment) timePickerFragment).setListener(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                loadTime(view);
+                loadTime(v, hourOfDay, minute);
             }
         });
         timePickerFragment.show(getSupportFragmentManager(), "timePicker");
@@ -120,17 +162,25 @@ public class CreateGoalActivity extends AppCompatActivity {
 
     private void loadLocation(Place place) {
         Log.d(TAG, "Location Loaded");
-        locationBtn.setText(place.getName());
+        goal.setLocation(place);
+        locationBtn.setText(goal.getLocation().getName());
     }
 
-    private void loadDate(DatePicker view) {
+    private void loadDate(int year, int month, int day) {
         Log.d(TAG, "Date Loaded");
-        dateBtn.setText(view.getMonth() + "/" + view.getDayOfMonth() + "/" + view.getYear());
+        goal.setDate(year, month, day);
+        dateBtn.setText(goal.getDate());
     }
 
-    private void loadTime(TimePicker view) {
+    private void loadTime(View v, int hour, int minutes) {
         Log.d(TAG, "Time Loaded");
-        timeBtn.setText(view.getHour() + ":" + view.getMinute());
+        if (v.getId() == R.id.activity_create_goal_btn_start_time) {
+            goal.setStartTime(hour, minutes);
+            startTimeBtn.setText(goal.getStartTime());
+        } else if (v.getId() == R.id.activity_create_goal_btn_end_time) {
+            goal.setEndTime(hour, minutes);
+            endTimeBtn.setText(goal.getEndTime());
+        }
     }
 
     public static class DatePickerFragment extends DialogFragment {
@@ -171,5 +221,35 @@ public class CreateGoalActivity extends AppCompatActivity {
         public void setListener(TimePickerDialog.OnTimeSetListener listener) {
             this.listener = listener;
         }
+    }
+
+    // Request photos and metadata for the specified place.
+    private void getPhotos(final String placeId) {
+        final GeoDataClient mGeoDataClient = Places.getGeoDataClient(this);
+        //final String placeId = "ChIJa147K9HX3IAR-lwiGIQv9i4";
+        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
+        photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                // Get the list of photos.
+                PlacePhotoMetadataResponse photos = task.getResult();
+                // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                // Get the first photo in the list.
+                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                // Get the attribution text.
+                CharSequence attribution = photoMetadata.getAttributions();
+                // Get a full-size bitmap for the photo.
+                Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
+                photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                        PlacePhotoResponse photo = task.getResult();
+                        Bitmap bitmap = photo.getBitmap();
+                        imgView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        });
     }
 }

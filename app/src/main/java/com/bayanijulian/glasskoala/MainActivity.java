@@ -19,13 +19,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int RC_LOGIN = 123;
-
+    private static final int RC_LOGIN = 43278;
     private RecyclerView goalsList;
     private FloatingActionButton createGoalFab;
-
     private FirebaseUser currentUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
         goalsList = findViewById(R.id.activity_main_rv_goals);
         goalsList.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
-
-        GoalsAdapter goalsAdapter = new GoalsAdapter(mockGoalsData());
-        goalsList.setAdapter(goalsAdapter);
 
         createGoalFab = findViewById(R.id.activity_main_fab_create_goal);
         createGoalFab.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_LOGIN) {
             if (resultCode == RESULT_OK) {
-                currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                authenticate();
                 Log.d(TAG, "Login Success, User ID is " + currentUser.getUid());
             } else {
                 Log.d(TAG, "Login Failure");
@@ -87,15 +81,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    private Goal[] mockGoalsData() {
-        Goal goal1 = new Goal("12/05/18", "7:00 PM", "ARC", 90);
-        Goal[] goals = new Goal[50];
-
-        for (int i = 0; i < goals.length; i++) {
-            goals[i] = goal1;
-        }
-
-        return goals;
-    }
 }
