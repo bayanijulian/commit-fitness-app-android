@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala;
+package com.bayanijulian.glasskoala.util;
 
 
 import android.util.Log;
@@ -15,11 +15,11 @@ public class DatabaseIO {
     private static final String TAG = DatabaseIO.class.getSimpleName();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    public interface OnGoalsLoadListener {
-        void onComplete(List<Goal> goals);
+    public interface Listener<T> {
+        void onComplete(List<T> data);
     }
 
-    public static void loadGoals(String userId, final OnGoalsLoadListener listener) {
+    public static void loadGoals(String userId, final Listener<Goal> listener) {
         String path = "goals/" + userId + "/goals";
         DatabaseReference reference = database.getReference(path);
 

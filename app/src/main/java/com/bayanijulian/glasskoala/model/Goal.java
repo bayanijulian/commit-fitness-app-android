@@ -2,8 +2,6 @@ package com.bayanijulian.glasskoala.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.android.gms.location.places.Place;
 import com.google.firebase.database.Exclude;
 
 /**
@@ -11,7 +9,7 @@ import com.google.firebase.database.Exclude;
  * Goals are when they chose to go to the gym at a certain time
  * and the amount of time they plan to stay there
  */
-public class Goal implements Parcelable {
+public class Goal implements Parcelable, Comparable<Goal>{
     public static final String LABEL = "com.bayanijulian.glasskoala.model.Goal";
     /**
      * Unique Identifier used in Firebase Realtime Database
@@ -78,10 +76,6 @@ public class Goal implements Parcelable {
     }
 
     @Exclude
-    public void setLocationPlace(Place place) {
-        this.location = new Location(place);
-    }
-    @Exclude
     public String getDuration() {
         return this.time.getDuration();
     }
@@ -115,4 +109,9 @@ public class Goal implements Parcelable {
             return new Goal[size];
         }
     };
+
+    @Override
+    public int compareTo(Goal that) {
+        return this.time.compareTo(that.getTime());
+    }
 }

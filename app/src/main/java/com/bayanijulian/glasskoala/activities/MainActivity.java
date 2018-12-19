@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala;
+package com.bayanijulian.glasskoala.activities;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.bayanijulian.glasskoala.R;
 import com.bayanijulian.glasskoala.model.Goal;
+import com.bayanijulian.glasskoala.util.DatabaseIO;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateGoalsList() {
-        DatabaseIO.loadGoals(currentUser.getUid(), new DatabaseIO.OnGoalsLoadListener() {
+        DatabaseIO.loadGoals(currentUser.getUid(), new DatabaseIO.Listener<Goal>() {
             @Override
             public void onComplete(List<Goal> goals) {
                 GoalsAdapter goalsAdapter = new GoalsAdapter(goals);

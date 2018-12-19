@@ -14,17 +14,17 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
 import com.google.android.gms.location.places.PlacePhotoResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.Exclude;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Location implements Parcelable {
     private static final String TAG = Location.class.getSimpleName();
     private String placeId;
     private String name;
+    private Double longitude;
+    private Double latitude;
 
     public Location() {
 
@@ -33,6 +33,10 @@ public class Location implements Parcelable {
     public Location(Place place) {
         this.placeId = place.getId();
         this.name = String.valueOf(place.getName());
+
+        LatLng coordinates = place.getLatLng();
+        this.latitude = coordinates.latitude;
+        this.longitude = coordinates.longitude;
     }
 
     public String getName() {
@@ -51,6 +55,30 @@ public class Location implements Parcelable {
         this.placeId = placeId;
     }
 
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    @Exclude
+    public android.location.Location getUserLocation() {
+        android.location.Location location = new android.location.Location(this.name);
+        location.setLatitude(this.latitude);
+        location.setLongitude(this.longitude);
+        return location;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -60,14 +88,18 @@ public class Location implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.placeId);
         dest.writeString(this.name);
+        dest.writeValue(this.longitude);
+        dest.writeValue(this.latitude);
     }
 
     protected Location(Parcel in) {
         this.placeId = in.readString();
         this.name = in.readString();
+        this.longitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.latitude = (Double) in.readValue(Double.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+    public static final Creator<Location> CREATOR = new Creator<Location>() {
         @Override
         public Location createFromParcel(Parcel source) {
             return new Location(source);
@@ -78,54 +110,4 @@ public class Location implements Parcelable {
             return new Location[size];
         }
     };
-
-    @Exclude
-    public void getPhoto(Context context, OnPhotoLoadListener listener) {
-        getPhotos(this.placeId, context, listener);
-    }
-    public interface OnPhotoLoadListener {
-        void onComplete(Bitmap bitmap);
-    }
-    // Request photos and metadata for the specified place.
-    private void getPhotos(final String placeId, final Context context, final OnPhotoLoadListener listener) {
-        Log.d(TAG, "Retrieving photos...");
-        final GeoDataClient mGeoDataClient = Places.getGeoDataClient(context);
-        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
-
-        photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
-                // Get the list of photos.
-                PlacePhotoMetadataResponse photos = task.getResult();
-                // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
-                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-                // Get the first photo in the list.
-                if (photoMetadataBuffer.getCount() == 0) {
-                    Log.d(TAG, "No photos available in photo metadata.");
-                    return;
-                }
-                Log.d(TAG, String.valueOf(photoMetadataBuffer.getCount()));
-                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                // Get the attribution text.
-                CharSequence attribution = photoMetadata.getAttributions();
-                // Get a full-size bitmap for the photo.
-                Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
-                photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                        PlacePhotoResponse photo = task.getResult();
-                        Bitmap bitmap = photo.getBitmap();
-                        if(bitmap != null) {
-                            listener.onComplete(bitmap);
-                        } else {
-                            Log.d(TAG, "Unable to get photo from bitmap.");
-                        }
-
-                    }
-                });
-            }
-        });
-    }
-
-
 }

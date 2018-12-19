@@ -1,20 +1,22 @@
-package com.bayanijulian.glasskoala;
+package com.bayanijulian.glasskoala.activities;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bayanijulian.glasskoala.R;
 import com.bayanijulian.glasskoala.model.Goal;
+import com.bayanijulian.glasskoala.util.LocationValidator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> {
+    private static final String TAG = GoalsAdapter.class.getSimpleName();
     private List<Goal> goals;
 
     public GoalsAdapter(List<Goal> goals) {
@@ -30,13 +32,29 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final Goal goal = goals.get(i);
         viewHolder.locationTxt.setText(goal.getLocation().getName());
         viewHolder.dateTxt.setText(goal.getDate());
         viewHolder.timeTxt.setText(goal.getStartTime());
         String durationOutput = String.valueOf(goal.getDuration());
         viewHolder.durationTxt.setText(durationOutput);
+        final LocationValidator.Listener listener = new LocationValidator.Listener() {
+            @Override
+            public void onComplete(boolean isValid) {
+                if(isValid)
+                    viewHolder.checkInBtn.setText("SUCESS");
+                else
+                    viewHolder.checkInBtn.setText("NOT CLOSE ENOUGH");
+            }
+        };
+        viewHolder.checkInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Check In Button Clicked!");
+                LocationValidator.updateUserLocation(v.getContext(), goal.getLocation().getUserLocation(),listener);
+            }
+        });
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-public class Time implements Parcelable {
+public class Time implements Parcelable, Comparable<Time> {
     private Long year;
     private Long month;
     private Long day;
@@ -191,4 +191,9 @@ public class Time implements Parcelable {
             return new Time[size];
         }
     };
+
+    @Override
+    public int compareTo(Time that) {
+        return this.startTime.compareTo(that.startTime);
+    }
 }

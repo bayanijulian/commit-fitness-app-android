@@ -1,11 +1,10 @@
-package com.bayanijulian.glasskoala;
+package com.bayanijulian.glasskoala.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -18,20 +17,14 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TimePicker;
 
+import com.bayanijulian.glasskoala.R;
 import com.bayanijulian.glasskoala.model.Goal;
 import com.bayanijulian.glasskoala.model.Location;
+import com.bayanijulian.glasskoala.util.PlacesPhotoRetriever;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlacePhotoMetadata;
-import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
-import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
-import com.google.android.gms.location.places.PlacePhotoResponse;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.Calendar;
 
@@ -164,9 +157,9 @@ public class CreateGoalActivity extends AppCompatActivity {
 
     private void loadLocation(Place place) {
         Log.d(TAG, "Location Loaded");
-        goal.setLocationPlace(place);
+        goal.setLocation(new Location(place));
         locationBtn.setText(goal.getLocation().getName());
-        goal.getLocation().getPhoto(this, new Location.OnPhotoLoadListener() {
+        PlacesPhotoRetriever.getPhotoById(this, place.getId(), new PlacesPhotoRetriever.Listener() {
             @Override
             public void onComplete(Bitmap bitmap) {
                 imgView.setImageBitmap(bitmap);
