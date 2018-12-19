@@ -17,9 +17,8 @@ import java.util.List;
 public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> {
     private List<Goal> goals;
 
-    public GoalsAdapter(Goal [] goals) {
-        this.goals = new ArrayList<>();
-        this.goals.addAll(Arrays.asList(goals));
+    public GoalsAdapter(List<Goal> goals) {
+        this.goals = goals;
     }
 
     @NonNull
@@ -36,7 +35,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
         viewHolder.locationTxt.setText(goal.getLocation().getName());
         viewHolder.dateTxt.setText(goal.getDate());
         viewHolder.timeTxt.setText(goal.getStartTime());
-        String durationOutput = String.valueOf(goal.getDuration()) + " minutes";
+        String durationOutput = String.valueOf(goal.getDuration());
         viewHolder.durationTxt.setText(durationOutput);
     }
 

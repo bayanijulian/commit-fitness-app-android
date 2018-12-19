@@ -13,11 +13,9 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.bayanijulian.glasskoala.model.Goal;
@@ -34,15 +32,12 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
-
-import static java.text.DateFormat.SHORT;
 
 public class CreateGoalActivity extends AppCompatActivity {
     private static final String TAG = CreateGoalActivity.class.getSimpleName();
     private static final int RC_PLACE_PICKER = 213;
+
 
     private Button locationBtn;
     private Button dateBtn;
@@ -107,6 +102,7 @@ public class CreateGoalActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_PLACE_PICKER) {
             if (resultCode == RESULT_OK && data != null) {
+
                 Place place = PlacePicker.getPlace(this, data);
                 Log.d(TAG, "Successfully selected a location, Name: " + place.getName()
                 + " , ID: " + place.getId());
@@ -118,7 +114,11 @@ public class CreateGoalActivity extends AppCompatActivity {
     }
 
     private void save() {
-        Log.d(TAG, "Saving Goal");
+        Log.d(TAG, "Sending Goal to Main Activity");
+        Intent goalData = new Intent();
+        goalData.putExtra(Goal.LABEL, goal);
+        setResult(RESULT_OK, goalData);
+        finish();
     }
 
     private void selectLocation() {
@@ -162,7 +162,7 @@ public class CreateGoalActivity extends AppCompatActivity {
 
     private void loadLocation(Place place) {
         Log.d(TAG, "Location Loaded");
-        goal.setLocation(place);
+        goal.setLocationPlace(place);
         locationBtn.setText(goal.getLocation().getName());
     }
 
