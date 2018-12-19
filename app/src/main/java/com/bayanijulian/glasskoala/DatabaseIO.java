@@ -16,7 +16,7 @@ public class DatabaseIO {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     public interface OnGoalsLoadListener {
-        void onLoad(List<Goal> goals);
+        void onComplete(List<Goal> goals);
     }
 
     public static void loadGoals(String userId, final OnGoalsLoadListener listener) {
@@ -32,7 +32,7 @@ public class DatabaseIO {
                     goal.setId(data.getKey());
                     goals.add(goal);
                 }
-                listener.onLoad(goals);
+                listener.onComplete(goals);
                 Log.d(TAG, "Goals loaded into client");
             }
 

@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateGoalsList() {
         DatabaseIO.loadGoals(currentUser.getUid(), new DatabaseIO.OnGoalsLoadListener() {
             @Override
-            public void onLoad(List<Goal> goals) {
+            public void onComplete(List<Goal> goals) {
                 GoalsAdapter goalsAdapter = new GoalsAdapter(goals);
                 goalsList.setAdapter(goalsAdapter);
             }

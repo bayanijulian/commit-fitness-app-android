@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import com.bayanijulian.glasskoala.model.Goal;
+import com.bayanijulian.glasskoala.model.Location;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -107,6 +108,7 @@ public class CreateGoalActivity extends AppCompatActivity {
                 Log.d(TAG, "Successfully selected a location, Name: " + place.getName()
                 + " , ID: " + place.getId());
                 loadLocation(place);
+
             } else {
                 Log.d(TAG, "Failed to select a location.");
             }
@@ -164,6 +166,12 @@ public class CreateGoalActivity extends AppCompatActivity {
         Log.d(TAG, "Location Loaded");
         goal.setLocationPlace(place);
         locationBtn.setText(goal.getLocation().getName());
+        goal.getLocation().getPhoto(this, new Location.OnPhotoLoadListener() {
+            @Override
+            public void onComplete(Bitmap bitmap) {
+                imgView.setImageBitmap(bitmap);
+            }
+        });
     }
 
     private void loadDate(int year, int month, int day) {
@@ -221,35 +229,5 @@ public class CreateGoalActivity extends AppCompatActivity {
         public void setListener(TimePickerDialog.OnTimeSetListener listener) {
             this.listener = listener;
         }
-    }
-
-    // Request photos and metadata for the specified place.
-    private void getPhotos(final String placeId) {
-        final GeoDataClient mGeoDataClient = Places.getGeoDataClient(this);
-        //final String placeId = "ChIJa147K9HX3IAR-lwiGIQv9i4";
-        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
-        photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
-                // Get the list of photos.
-                PlacePhotoMetadataResponse photos = task.getResult();
-                // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
-                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-                // Get the first photo in the list.
-                PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-                // Get the attribution text.
-                CharSequence attribution = photoMetadata.getAttributions();
-                // Get a full-size bitmap for the photo.
-                Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
-                photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                        PlacePhotoResponse photo = task.getResult();
-                        Bitmap bitmap = photo.getBitmap();
-                        imgView.setImageBitmap(bitmap);
-                    }
-                });
-            }
-        });
     }
 }
