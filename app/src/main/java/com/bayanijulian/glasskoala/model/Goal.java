@@ -2,7 +2,7 @@ package com.bayanijulian.glasskoala.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 /**
  * Represents the goals that a user has set for themselves.
@@ -12,9 +12,10 @@ import com.google.firebase.database.Exclude;
 public class Goal implements Parcelable, Comparable<Goal>{
     public static final String LABEL = "com.bayanijulian.glasskoala.model.Goal";
     /**
-     * Unique Identifier used in Firebase Realtime Database
+     * Unique Identifier used in Firebase Firestore
      */
-    private String id = null;
+    private String id;
+    private String userId;
     private Location location = new Location();
     private Time time = new Time();
 
@@ -37,6 +38,14 @@ public class Goal implements Parcelable, Comparable<Goal>{
     @Exclude
     public String getId() {
         return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Location getLocation() {

@@ -3,22 +3,22 @@ package com.bayanijulian.glasskoala.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class Time implements Parcelable, Comparable<Time> {
-    private Long year;
-    private Long month;
-    private Long day;
+    private int year;
+    private int month;
+    private int day;
 
-    private Long startHour;
-    private Long startMinutes;
+    private int startHour;
+    private int startMinutes;
 
-    private Long endHour;
-    private Long endMinutes;
+    private int endHour;
+    private int endMinutes;
 
     private Calendar startTime = Calendar.getInstance();
     private Calendar endTime = Calendar.getInstance();
@@ -28,96 +28,96 @@ public class Time implements Parcelable, Comparable<Time> {
 
     }
 
-    public void setYear(Long year) {
+    public void setYear(int year) {
         this.year = year;
-        startTime.set(Calendar.YEAR, convertToInt(year));
-        endTime.set(Calendar.YEAR, convertToInt(year));
+        startTime.set(Calendar.YEAR, year);
+        endTime.set(Calendar.YEAR, year);
     }
 
-    public void setMonth(Long month) {
+    public void setMonth(int month) {
         this.month = month;
-        startTime.set(Calendar.MONTH, convertToInt(month));
-        endTime.set(Calendar.MONTH, convertToInt(month));
+        startTime.set(Calendar.MONTH, month);
+        endTime.set(Calendar.MONTH, month);
     }
 
-    public void setDay(Long day) {
+    public void setDay(int day) {
         this.day = day;
-        startTime.set(Calendar.DATE, convertToInt(day));
-        endTime.set(Calendar.DATE, convertToInt(day));
+        startTime.set(Calendar.DATE, day);
+        endTime.set(Calendar.DATE, day);
     }
 
-    public void setStartHour(Long startHour) {
+    public void setStartHour(int startHour) {
         this.startHour = startHour;
-        startTime.set(Calendar.HOUR_OF_DAY, convertToInt(startHour));
+        startTime.set(Calendar.HOUR_OF_DAY,startHour);
     }
 
-    public void setStartMinutes(Long startMinutes) {
+    public void setStartMinutes(int startMinutes) {
         this.startMinutes = startMinutes;
-        startTime.set(Calendar.MINUTE, convertToInt(startMinutes));
+        startTime.set(Calendar.MINUTE, startMinutes);
     }
 
-    public void setEndHour(Long endHour) {
+    public void setEndHour(int endHour) {
         this.endHour = endHour;
-        endTime.set(Calendar.HOUR_OF_DAY, convertToInt(endHour));
+        endTime.set(Calendar.HOUR_OF_DAY, endHour);
     }
 
-    public void setEndMinutes(Long endMinutes) {
+    public void setEndMinutes(int endMinutes) {
         this.endMinutes = endMinutes;
-        endTime.set(Calendar.MINUTE, convertToInt(endMinutes));
+        endTime.set(Calendar.MINUTE, endMinutes);
     }
 
-    public Long getYear() {
+    public int getYear() {
         return year;
     }
 
-    public Long getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    public Long getDay() {
+    public int getDay() {
         return day;
     }
 
-    public Long getStartHour() {
+    public int getStartHour() {
         return startHour;
     }
 
-    public Long getStartMinutes() {
+    public int getStartMinutes() {
         return startMinutes;
     }
 
-    public Long getEndHour() {
+    public int getEndHour() {
         return endHour;
     }
 
-    public Long getEndMinutes() {
+    public int getEndMinutes() {
         return endMinutes;
     }
 
     @Exclude
     public void setStartTime(int startHour, int startMinutes) {
-        this.startHour = convertToLong(startHour);
-        this.startMinutes = convertToLong(startMinutes);
+        this.startHour = startHour;
+        this.startMinutes = startMinutes;
 
-        this.startTime.set(Calendar.HOUR_OF_DAY, convertToInt(this.startHour));
-        this.startTime.set(Calendar.MINUTE, convertToInt(this.startMinutes));
+        this.startTime.set(Calendar.HOUR_OF_DAY, startHour);
+        this.startTime.set(Calendar.MINUTE, startMinutes);
     }
     @Exclude
     public void setEndTime(int endHour, int endMinutes) {
-        this.endHour = convertToLong(endHour);
-        this.endMinutes = convertToLong(endMinutes);
+        this.endHour = endHour;
+        this.endMinutes = endMinutes;
 
-        this.endTime.set(Calendar.HOUR_OF_DAY, convertToInt(this.endHour));
-        this.endTime.set(Calendar.MINUTE, convertToInt(this.endMinutes));
+        this.endTime.set(Calendar.HOUR_OF_DAY, endHour);
+        this.endTime.set(Calendar.MINUTE, endMinutes);
     }
     @Exclude
     public void setDate(int year, int month, int day) {
-        this.year = convertToLong(year);
-        this.month = convertToLong(month);
-        this.day = convertToLong(day);
+        this.year = year;
+        this.month = month;
+        this.day = day;
 
-        this.startTime.set(convertToInt(this.year), convertToInt(this.month), convertToInt(this.day));
-        this.endTime.set(convertToInt(this.year), convertToInt(this.month), convertToInt(this.day));
+        this.startTime.set(year, month, day);
+        this.endTime.set(year, month, day);
     }
 
     @Exclude
@@ -142,12 +142,10 @@ public class Time implements Parcelable, Comparable<Time> {
         return String.valueOf(minutes) + " minutes";
     }
 
-    private int convertToInt(Long val) {
-        return (int)(long) val;
-    }
 
-    private Long convertToLong(int val) {
-        return (Long)(long)val;
+    @Override
+    public int compareTo(Time that) {
+        return this.startTime.compareTo(that.startTime);
     }
 
     @Override
@@ -157,30 +155,30 @@ public class Time implements Parcelable, Comparable<Time> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.year);
-        dest.writeValue(this.month);
-        dest.writeValue(this.day);
-        dest.writeValue(this.startHour);
-        dest.writeValue(this.startMinutes);
-        dest.writeValue(this.endHour);
-        dest.writeValue(this.endMinutes);
+        dest.writeInt(this.year);
+        dest.writeInt(this.month);
+        dest.writeInt(this.day);
+        dest.writeInt(this.startHour);
+        dest.writeInt(this.startMinutes);
+        dest.writeInt(this.endHour);
+        dest.writeInt(this.endMinutes);
         dest.writeSerializable(this.startTime);
         dest.writeSerializable(this.endTime);
     }
 
     protected Time(Parcel in) {
-        this.year = (Long) in.readValue(Long.class.getClassLoader());
-        this.month = (Long) in.readValue(Long.class.getClassLoader());
-        this.day = (Long) in.readValue(Long.class.getClassLoader());
-        this.startHour = (Long) in.readValue(Long.class.getClassLoader());
-        this.startMinutes = (Long) in.readValue(Long.class.getClassLoader());
-        this.endHour = (Long) in.readValue(Long.class.getClassLoader());
-        this.endMinutes = (Long) in.readValue(Long.class.getClassLoader());
+        this.year = in.readInt();
+        this.month = in.readInt();
+        this.day = in.readInt();
+        this.startHour = in.readInt();
+        this.startMinutes = in.readInt();
+        this.endHour = in.readInt();
+        this.endMinutes = in.readInt();
         this.startTime = (Calendar) in.readSerializable();
         this.endTime = (Calendar) in.readSerializable();
     }
 
-    public static final Parcelable.Creator<Time> CREATOR = new Parcelable.Creator<Time>() {
+    public static final Creator<Time> CREATOR = new Creator<Time>() {
         @Override
         public Time createFromParcel(Parcel source) {
             return new Time(source);
@@ -191,9 +189,4 @@ public class Time implements Parcelable, Comparable<Time> {
             return new Time[size];
         }
     };
-
-    @Override
-    public int compareTo(Time that) {
-        return this.startTime.compareTo(that.startTime);
-    }
 }

@@ -1,8 +1,15 @@
-package com.bayanijulian.glasskoala.activities;
+package com.bayanijulian.glasskoala.ui;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,9 +31,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int RC_LOGIN = 43278;
     private static final int RC_CREATE_GOAL = 3245;
-    private RecyclerView goalsList;
-    private FloatingActionButton createGoalFab;
+
     private FirebaseUser currentUser;
+    private FloatingActionButton createGoalFab;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         authenticate();
-
-        goalsList = findViewById(R.id.activity_main_rv_goals);
-        goalsList.setLayoutManager(new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false));
 
         createGoalFab = findViewById(R.id.activity_main_fab_create_goal);
         createGoalFab.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(startCreateGoalActivity, RC_CREATE_GOAL);
             }
         });
+
+        viewPager = findViewById(R.id.activity_main_view_pager);
+        PagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+
+        tabLayout = findViewById(R.id.activity_main_tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -63,15 +75,10 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK && data != null) {
                 Log.d(TAG, "New goal created. Attempting to write to database.");
                 Goal newGoal = data.getParcelableExtra(Goal.LABEL);
-                DatabaseIO.addGoal(currentUser.getUid(), newGoal);
+                newGoal.setUserId(currentUser.getUid());
+                DatabaseIO.addGoal(newGoal);
             }
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        updateGoalsList();
     }
 
     private void login() {
@@ -97,13 +104,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateGoalsList() {
-        DatabaseIO.loadGoals(currentUser.getUid(), new DatabaseIO.Listener<Goal>() {
-            @Override
-            public void onComplete(List<Goal> goals) {
-                GoalsAdapter goalsAdapter = new GoalsAdapter(goals);
-                goalsList.setAdapter(goalsAdapter);
+    private class MainPagerAdapter extends FragmentPagerAdapter {
+        private static final int PAGE_COUNT = 2;
+
+        public MainPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+
+        @Override
+        public Fragment getItem(int currentPage) {
+            switch (currentPage) {
+                case 0:
+                    return new GroupsFragment();
+                case 1:
+                    return new GoalsFragment();
+                default:
+                    throw new IllegalStateException();
             }
-        });
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int currentPage) {
+            switch(currentPage) {
+                case 0:
+                    return "Groups";
+                case 1:
+                    return "Goals";
+                default:
+                    throw new IllegalStateException();
+            }
+        }
     }
+
 }

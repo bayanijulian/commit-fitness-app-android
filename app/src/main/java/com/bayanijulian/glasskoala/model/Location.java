@@ -1,30 +1,17 @@
 package com.bayanijulian.glasskoala.model;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlacePhotoMetadata;
-import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
-import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
-import com.google.android.gms.location.places.PlacePhotoResponse;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 public class Location implements Parcelable {
     private static final String TAG = Location.class.getSimpleName();
     private String placeId;
     private String name;
-    private Double longitude;
-    private Double latitude;
+    private double longitude;
+    private double latitude;
 
     public Location() {
 
@@ -88,15 +75,15 @@ public class Location implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.placeId);
         dest.writeString(this.name);
-        dest.writeValue(this.longitude);
-        dest.writeValue(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeDouble(this.latitude);
     }
 
     protected Location(Parcel in) {
         this.placeId = in.readString();
         this.name = in.readString();
-        this.longitude = (Double) in.readValue(Double.class.getClassLoader());
-        this.latitude = (Double) in.readValue(Double.class.getClassLoader());
+        this.longitude = in.readDouble();
+        this.latitude = in.readDouble();
     }
 
     public static final Creator<Location> CREATOR = new Creator<Location>() {
