@@ -14,7 +14,7 @@ import com.google.android.gms.location.LocationResult;
 
 public class LocationValidator {
     private static final String TAG = LocationValidator.class.getSimpleName();
-    private static final float MAX_METERS = 400;
+    private static final float MAX_METERS = 100;
 
     public interface Listener {
         void onComplete(boolean isNear);
