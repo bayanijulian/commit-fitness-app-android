@@ -20,6 +20,7 @@ public class Goal implements Parcelable, Comparable<Goal>{
     private Time time = new Time();
 
     public Goal() {
+
     }
 
     public void setLocation(Location location) {

@@ -23,7 +23,6 @@ public class Time implements Parcelable, Comparable<Time> {
     private Calendar startTime = Calendar.getInstance();
     private Calendar endTime = Calendar.getInstance();
 
-
     public Time() {
 
     }

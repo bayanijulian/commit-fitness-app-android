@@ -1,7 +1,5 @@
 package com.bayanijulian.glasskoala.ui;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bayanijulian.glasskoala.R;
+import com.bayanijulian.glasskoala.database.GoalIO;
 import com.bayanijulian.glasskoala.model.Goal;
-import com.bayanijulian.glasskoala.util.DatabaseIO;
+import com.bayanijulian.glasskoala.database.DatabaseIO;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -35,18 +35,19 @@ public class GoalsFragment extends Fragment {
         goalsList = view.findViewById(R.id.fragment_goals_rv_goals);
         goalsList.setLayoutManager(new LinearLayoutManager(view.getContext(),
                 LinearLayoutManager.VERTICAL, false));
-        updateGoalsList();
+
+
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         updateGoalsList();
     }
 
     private void updateGoalsList() {
-        DatabaseIO.loadGoals(FirebaseAuth.getInstance().getCurrentUser().getUid(), new DatabaseIO.Listener<Goal>() {
+        DatabaseIO.getGoalIO().read(new DatabaseIO.Listener<Goal>() {
             @Override
             public void onComplete(List<Goal> goals) {
                 GoalsAdapter goalsAdapter = new GoalsAdapter(goals);
