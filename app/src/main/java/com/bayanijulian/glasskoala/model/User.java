@@ -1,5 +1,7 @@
 package com.bayanijulian.glasskoala.model;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.List;
 
 public class User {
@@ -12,6 +14,7 @@ public class User {
     public User() {
     }
 
+    @Exclude
     public String getId() {
         return id;
     }

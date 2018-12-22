@@ -1,7 +1,9 @@
 package com.bayanijulian.glasskoala.ui;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,7 +13,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bayanijulian.glasskoala.R;
@@ -31,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_CREATE_GOAL = 3245;
 
     private FirebaseUser currentUser;
-    private FloatingActionButton createGoalFab;
     private ViewPager viewPager;
-    private TabLayout tabLayout;
-
+    private BottomNavigationView navigation;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,21 +45,24 @@ public class MainActivity extends AppCompatActivity {
 
         authenticate();
 
-        createGoalFab = findViewById(R.id.activity_main_fab_create_goal);
-        createGoalFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startCreateGoalActivity = new Intent(v.getContext(), CreateGoalActivity.class);
-                startActivityForResult(startCreateGoalActivity, RC_CREATE_GOAL);
-            }
-        });
+//        createGoalFab = findViewById(R.id.activity_main_fab_create_goal);
+//        createGoalFab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent startCreateGoalActivity = new Intent(v.getContext(), CreateGoalActivity.class);
+//                startActivityForResult(startCreateGoalActivity, RC_CREATE_GOAL);
+//            }
+//        });
 
         viewPager = findViewById(R.id.activity_main_view_pager);
-        PagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
+        navigation = findViewById(R.id.activity_main_navigation);
 
-        tabLayout = findViewById(R.id.activity_main_tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        setupPagerAdapter();
+        setupViewPagerNavigation();
+        setupViewPagerAnimation();
+
+        toolbar = findViewById(R.id.activity_main_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -115,42 +121,97 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class MainPagerAdapter extends FragmentPagerAdapter {
-        private static final int PAGE_COUNT = 2;
-
-        public MainPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return PAGE_COUNT;
-        }
-
-        @Override
-        public Fragment getItem(int currentPage) {
-            switch (currentPage) {
-                case 0:
-                    return new HomeFragment();
-                case 1:
-                    return new GoalsFragment();
-                default:
-                    throw new IllegalStateException();
+    private void setupPagerAdapter() {
+        PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int currentPage) {
+                switch (currentPage) {
+                    case 0:
+                        return new HomeFragment();
+                    case 1:
+                        return new GoalsFragment();
+                    case 2:
+                        return new ProfileFragment();
+                    default:
+                        throw new IllegalStateException();
+                }
             }
-        }
 
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int currentPage) {
-            switch(currentPage) {
-                case 0:
-                    return "Groups";
-                case 1:
-                    return "Goals";
-                default:
-                    throw new IllegalStateException();
+            @Override
+            public int getCount() {
+                return 3;
             }
-        }
+        };
+
+        viewPager.setAdapter(pagerAdapter);
     }
 
+    private void setupViewPagerNavigation() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private MenuItem previous;
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int currentPage) {
+                if(previous == null) {
+                    // set previous  to first page when first loaded
+                    previous = navigation.getMenu().getItem(0);
+                }
+
+                previous.setChecked(false);
+
+                // set the new page to checked
+                navigation.getMenu().getItem(currentPage).setChecked(true);
+
+                // update the new page to be previous
+                previous = navigation.getMenu().getItem(currentPage);
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_main_item_home:
+                        viewPager.setCurrentItem(0);
+                        return true;
+                    case R.id.menu_main_item_goals:
+                        viewPager.setCurrentItem(1);
+                        return true;
+                    case R.id.menu_main_item_profile:
+                        viewPager.setCurrentItem(2);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    private void setupViewPagerAnimation() {
+        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                page.setTranslationX(-1 * position * page.getWidth());
+
+                if (Math.abs(position) < 0.5) {
+                    page.setVisibility(View.VISIBLE);
+                    page.setScaleX(1 - Math.abs(position));
+                    page.setScaleY(1 - Math.abs(position));
+                } else if (Math.abs(position) > 0.5) {
+                    page.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
 }

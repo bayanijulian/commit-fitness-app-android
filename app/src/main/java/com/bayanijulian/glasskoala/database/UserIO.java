@@ -9,19 +9,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserIO extends DatabaseIO<User>{
     private static final String TAG = UserIO.class.getSimpleName();
 
     @Override
-    public void create(User data) {
-        database.collection("users").add(data);
+    public void create(User user) {
+        database.collection("users").document(user.getId()).set(user);
         Log.d(TAG, "Created user.");
     }
 
     @Override
-    public void read(Listener<User> listener) {
+    public void read(final Listener<User> listener) {
         database.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -31,9 +35,13 @@ public class UserIO extends DatabaseIO<User>{
                         Log.d(TAG, "No results for reading in users");
                         return;
                     }
-                    for (DocumentSnapshot document : task.getResult()) {
-
+                    List<User> users = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        User user = document.toObject(User.class);
+                        users.add(user);
                     }
+                    listener.onComplete(users);
+                    Log.d(TAG, "Read in users");
                 } else {
                     Log.d(TAG, "Error reading in users.");
                 }
