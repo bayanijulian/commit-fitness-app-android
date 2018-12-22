@@ -32,7 +32,8 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".ui.CreateGroupActivity" />
-        <activity android:name=".ui.MainActivity"></activity>
+        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.ProfileDetailActivity"></activity>
     </application>
 
 </manifest>

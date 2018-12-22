@@ -47,6 +47,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profileBtn = view.findViewById(R.id.fragment_profile_btn);
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startProfileDetailActivity();
+            }
+        });
+
         nameTxt = view.findViewById(R.id.fragment_profile_tv_name);
 
         String name = currentUser.getDisplayName();
@@ -56,4 +64,9 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+
+    private void startProfileDetailActivity() {
+        Intent profileDetailActivity = new Intent(getActivity(), ProfileDetailActivity.class);
+        startActivity(profileDetailActivity);
+    }
 }

@@ -8,6 +8,7 @@ public class User {
     private String id;
     private String name;
     private String phoneNumber;
+    private String profileImg;
     private List<String> friendIds;
     private List<String> groupIds;
 
@@ -21,6 +22,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getProfileImg() {
+        return profileImg;
+    }
+
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 
     public String getName() {
