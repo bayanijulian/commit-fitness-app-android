@@ -1,7 +1,6 @@
 package com.bayanijulian.glasskoala.ui;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -12,14 +11,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
 import com.bayanijulian.glasskoala.R;
 import com.bayanijulian.glasskoala.model.Goal;
-import com.bayanijulian.glasskoala.util.DatabaseIO;
+import com.bayanijulian.glasskoala.database.DatabaseIO;
+import com.bayanijulian.glasskoala.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "New goal created. Attempting to write to database.");
                 Goal newGoal = data.getParcelableExtra(Goal.LABEL);
                 newGoal.setUserId(currentUser.getUid());
-                DatabaseIO.addGoal(newGoal);
+                DatabaseIO.getGoalIO().create(newGoal);
             }
         }
     }
@@ -101,7 +99,20 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser == null) {
             Log.d(TAG, "No current user. Going to login activity.");
             login();
+        } else {
+            updateUser();
         }
+    }
+
+    private void updateUser() {
+        String id = this.currentUser.getUid();
+        String name = this.currentUser.getDisplayName();
+        String phoneNumber = this.currentUser.getPhoneNumber();
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setPhoneNumber(phoneNumber);
+
     }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {
@@ -120,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int currentPage) {
             switch (currentPage) {
                 case 0:
-                    return new GroupsFragment();
+                    return new HomeFragment();
                 case 1:
                     return new GoalsFragment();
                 default:

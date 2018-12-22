@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.bayanijulian.glasskoala.R;
 
-public class GroupsFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    public GroupsFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
