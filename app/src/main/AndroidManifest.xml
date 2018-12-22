@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +32,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".ui.CreateGroupActivity" />
-        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".ui.MainActivity"></activity>
     </application>
 
 </manifest>

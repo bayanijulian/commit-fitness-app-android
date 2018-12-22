@@ -4,6 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInActivity">
+    android:background="@color/colorPrimary"
+    tools:context=".ui.SignInActivity">
 
+    <TextView
+        android:id="@+id/activity_sign_in_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <EditText
+        android:id="@+id/activity_sign_et_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/activity_sign_in_tv_title"
+        app:layout_constraintStart_toStartOf="@+id/activity_sign_in_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/activity_sign_in_tv_title" />
+
+    <EditText
+        android:id="@+id/activity_sign_in_et_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/activity_sign_et_email"
+        app:layout_constraintStart_toStartOf="@+id/activity_sign_et_email"
+        app:layout_constraintTop_toBottomOf="@+id/activity_sign_et_email" />
+
+    <Button
+        android:id="@+id/activity_sign_in_btn_login"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:elevation="4dp"
+        android:text="Login"
+        app:layout_constraintEnd_toEndOf="@+id/activity_sign_in_et_password"
+        app:layout_constraintStart_toStartOf="@+id/activity_sign_in_et_password"
+        app:layout_constraintTop_toBottomOf="@+id/activity_sign_in_et_password" />
+
+    <TextView
+        android:id="@+id/activity_sign_in_tv_or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="or"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/activity_sign_in_btn_login"
+        app:layout_constraintStart_toStartOf="@+id/activity_sign_in_btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/activity_sign_in_btn_login" />
+
+    <Button
+        android:id="@+id/button2activity_sign_in_btn_sign_up"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Sign Up"
+        app:layout_constraintEnd_toEndOf="@+id/activity_sign_in_btn_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/activity_sign_in_btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/activity_sign_in_tv_or" />
 </android.support.constraint.ConstraintLayout>

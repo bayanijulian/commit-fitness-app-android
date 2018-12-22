@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "Logging out user.");
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), SignInActivity.class);
                 startActivity(intent);
             }
         });
