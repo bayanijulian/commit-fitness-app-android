@@ -100,6 +100,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
+        // load current user data first and then go to main activity
+
         Intent mainActivity = new Intent(this, MainActivity.class);
         startActivity(mainActivity);
     }

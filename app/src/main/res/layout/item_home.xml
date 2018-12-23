@@ -19,14 +19,18 @@
             android:padding="16dp">
 
 
-            <ImageView
+            <com.github.abdularis.civ.AvatarImageView
                 android:id="@+id/item_user_img_profile"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="TODO"
-                app:srcCompat="@drawable/ic_person_outline_black_24dp"
+                android:src="@drawable/ic_avatar_large"
+                android:scaleType="center"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/colorAccent"
+                app:avatarBackgroundColor="@color/colorPrimary"
+                app:state="IMAGE"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 

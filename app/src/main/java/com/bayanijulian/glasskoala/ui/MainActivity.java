@@ -43,16 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-//        createGoalFab = findViewById(R.id.activity_main_fab_create_goal);
-//        createGoalFab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent startCreateGoalActivity = new Intent(v.getContext(), CreateGoalActivity.class);
-//                startActivityForResult(startCreateGoalActivity, RC_CREATE_GOAL);
-//            }
-//        });
-
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         viewPager = findViewById(R.id.activity_main_view_pager);

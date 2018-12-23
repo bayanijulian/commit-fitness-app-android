@@ -66,7 +66,8 @@ public class UserIO extends DatabaseIO<User>{
                 .getReference(currentUser.getUid() + "/profileImages");
         final UploadTask uploadTask = storageReference.putFile(image);
 
-        // first tasks uploads image to FirebaseStorage, second task gets the download url
+        // first tasks uploads image to FirebaseStorage
+        // second task gets the download url to update FirebaseFirestore
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -92,4 +93,34 @@ public class UserIO extends DatabaseIO<User>{
             }
         });
     }
+
+
+
+    public void getCurrentUser(final Listener<User> listener) {
+        Log.d(TAG, "Getting current user");
+        database.collection("users")
+                .document(currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() == null) {
+                                Log.d(TAG, "Current user did not have data");
+                            }
+                            // users list which should only contain one element
+                            List<User> users = new ArrayList<>();
+                            DocumentSnapshot document = task.getResult();
+
+                            User user = document.toObject(User.class);
+                            users.add(user);
+                            listener.onComplete(users);
+                            Log.d(TAG, "Read in current user");
+                        } else {
+                            Log.d(TAG, "Error reading in current user.");
+                        }
+                    }
+                });
+    }
+
 }

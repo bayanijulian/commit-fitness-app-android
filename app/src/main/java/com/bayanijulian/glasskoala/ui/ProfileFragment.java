@@ -8,21 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bayanijulian.glasskoala.R;
+import com.bayanijulian.glasskoala.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = ProfileFragment.class.getSimpleName();
+
+
     private Button logoutBtn;
 
-    private ImageButton profileBtn;
+    private ImageView profileImg;
     private TextView nameTxt;
 
-    private FirebaseUser currentUser;
+    private User currentUser;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -34,32 +37,31 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        logoutBtn = view.findViewById(R.id.fragment_profile_btn_logout);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Logging out user.");
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), SignInActivity.class);
-                startActivity(intent);
-            }
-        });
 
-        profileBtn = view.findViewById(R.id.fragment_profile_btn);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startProfileDetailActivity();
-            }
-        });
-
-        nameTxt = view.findViewById(R.id.fragment_profile_tv_name);
-
-        String name = currentUser.getDisplayName();
-        nameTxt.setText(name);
-
+//        logoutBtn = view.findViewById(R.id.fragment_profile_btn_logout);
+//        logoutBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(TAG, "Logging out user.");
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(getActivity(), SignInActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        profileImg = view.findViewById(R.id.fragment_profile_img);
+//        profileImg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startProfileDetailActivity();
+//            }
+//        });
+//
+//
+//
+//        nameTxt = view.findViewById(R.id.fragment_profile_tv_name);
+//        nameTxt.setText(name);
 
         return view;
     }
