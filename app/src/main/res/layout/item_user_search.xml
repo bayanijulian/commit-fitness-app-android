@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp">
+
+    <com.github.abdularis.civ.AvatarImageView
+        android:id="@+id/item_user_search_img_profile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_person_outline_black_24dp"
+        app:avatarBackgroundColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="1dp"
+        app:text="B"
+        app:textColor="@color/colorAccent"
+        app:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/item_user_search_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Bayani Julian"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintBottom_toBottomOf="@+id/item_user_search_img_profile"
+        app:layout_constraintStart_toEndOf="@+id/item_user_search_img_profile"
+        app:layout_constraintTop_toTopOf="@+id/item_user_search_img_profile" />
+
+    <ToggleButton
+        android:id="@+id/item_user_search_btn_follow"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textSize="12sp"
+        android:textOn="@string/unfollow"
+        android:textOff="@string/follow"
+        app:layout_constraintBottom_toBottomOf="@+id/item_user_search_img_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/item_user_search_img_profile" />
+
+</android.support.constraint.ConstraintLayout>

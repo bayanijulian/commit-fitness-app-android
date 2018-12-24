@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala.ui;
+package com.bayanijulian.glasskoala.view;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,12 +11,17 @@ import android.widget.EditText;
 
 import com.bayanijulian.glasskoala.R;
 import com.bayanijulian.glasskoala.database.DatabaseIO;
+import com.bayanijulian.glasskoala.database.UserIO;
 import com.bayanijulian.glasskoala.model.User;
+import com.bayanijulian.glasskoala.view.main.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
     private static final String TAG = SignInActivity.class.getSimpleName();
@@ -59,8 +64,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Login success");
-                    updateUser();
-                    startMainActivity();
+                    loadUser();
                 } else {
                     updateUIFailedLogin();
                 }
@@ -75,7 +79,7 @@ public class SignInActivity extends AppCompatActivity {
     private void verifyCurrentUser() {
         currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
-            startMainActivity();
+            loadUser();
         }
     }
 
@@ -89,20 +93,32 @@ public class SignInActivity extends AppCompatActivity {
      */
     private void updateUser() {
         currentUser = firebaseAuth.getCurrentUser();
-        String id = this.currentUser.getUid();
+        String id = Objects.requireNonNull(this.currentUser).getUid();
         String name = this.currentUser.getDisplayName();
         String phoneNumber = this.currentUser.getPhoneNumber();
         User user = new User();
         user.setId(id);
         user.setName(name);
         user.setPhoneNumber(phoneNumber);
-        DatabaseIO.getUserIO().create(user);
+        UserIO.create(FirebaseFirestore.getInstance(), user);
     }
 
-    private void startMainActivity() {
-        // load current user data first and then go to main activity
+    /**
+     * Loads the user to our model, to send to the main activity as a parcelable
+     */
+    private void loadUser() {
+        UserIO.get(FirebaseFirestore.getInstance(), currentUser, new DatabaseIO.SingleListener<User>() {
+            @Override
+            public void onComplete(User data) {
+                startMainActivity(data);
+            }
+        });
+    }
 
+    private void startMainActivity(User user) {
+        // load current user data first and then go to main activity
         Intent mainActivity = new Intent(this, MainActivity.class);
+        mainActivity.putExtra(User.LABEL, user);
         startActivity(mainActivity);
     }
 }

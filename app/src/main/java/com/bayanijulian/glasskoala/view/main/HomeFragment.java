@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala.ui;
+package com.bayanijulian.glasskoala.view.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 
 import com.bayanijulian.glasskoala.R;
 import com.bayanijulian.glasskoala.database.DatabaseIO;
+import com.bayanijulian.glasskoala.database.UserIO;
 import com.bayanijulian.glasskoala.model.User;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    public static final String TAG = HomeFragment.class.getSimpleName();
     private RecyclerView homeList;
 
 
@@ -22,6 +25,9 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static HomeFragment getInstance() {
+        return new HomeFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,15 +38,17 @@ public class HomeFragment extends Fragment {
         homeList = view.findViewById(R.id.fragment_home_rv);
         homeList.setLayoutManager(new LinearLayoutManager(view.getContext(),
                 LinearLayoutManager.VERTICAL, false));
-
-        updateHomeList();
         return view;
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateHomeList();
+    }
 
     private void updateHomeList() {
-        DatabaseIO.getUserIO().read(new DatabaseIO.Listener<User>() {
+        UserIO.getAll(FirebaseFirestore.getInstance(), new DatabaseIO.ListListener<User>() {
             @Override
             public void onComplete(List<User> data) {
                 HomeAdapter homeAdapter = new HomeAdapter(data);

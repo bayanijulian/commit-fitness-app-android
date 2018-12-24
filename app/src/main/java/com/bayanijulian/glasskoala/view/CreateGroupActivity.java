@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala.ui;
+package com.bayanijulian.glasskoala.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

@@ -6,13 +6,13 @@
         android:icon="@drawable/ic_home_black_24dp"
         />
     <item
-        android:id="@+id/menu_main_item_goals"
-        android:title="Goals"
-        android:icon="@drawable/ic_event_note_black_24dp"
-        />
-    <item
         android:id="@+id/menu_main_item_profile"
         android:title="Profile"
         android:icon="@drawable/ic_person_black_24dp"
+        />
+    <item
+        android:id="@+id/menu_main_item_discover"
+        android:title="Search"
+        android:icon="@drawable/ic_search_black_24dp"
         />
 </menu>

@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala.ui;
+package com.bayanijulian.glasskoala.view.goal;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bayanijulian.glasskoala.R;
@@ -34,27 +34,22 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final Goal goal = goals.get(i);
+
         viewHolder.locationTxt.setText(goal.getLocation().getName());
         viewHolder.dateTxt.setText(goal.getDate());
-        viewHolder.timeTxt.setText(goal.getStartTime());
-        String durationOutput = String.valueOf(goal.getDuration());
-        viewHolder.durationTxt.setText(durationOutput);
+        viewHolder.startTimeTxt.setText(goal.getStartTime());
+        viewHolder.endTimeTxt.setText(goal.getEndTime());
+
+
         final LocationValidator.Listener listener = new LocationValidator.Listener() {
             @Override
             public void onComplete(boolean isValid) {
-                if(isValid)
-                    viewHolder.checkInBtn.setText("SUCESS");
+                if (isValid)
+                    viewHolder.statusTxt.setText("You got this! Only " + goal.getDuration() + " to go!");
                 else
-                    viewHolder.checkInBtn.setText("NOT CLOSE ENOUGH");
+                    viewHolder.statusTxt.setText("NOT CLOSE ENOUGH");
             }
         };
-        viewHolder.checkInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Check In Button Clicked!");
-                LocationValidator.updateUserLocation(v.getContext(), goal.getLocation().getUserLocation(),listener);
-            }
-        });
     }
 
     @Override
@@ -66,18 +61,18 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.ViewHolder> 
         public View itemView;
         public TextView locationTxt;
         public TextView dateTxt;
-        public TextView timeTxt;
-        public TextView durationTxt;
-        public Button checkInBtn;
+        public TextView startTimeTxt;
+        public TextView endTimeTxt;
+        public TextView statusTxt;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            this.locationTxt = itemView.findViewById(R.id.item_goal_tv_location);
-            this.dateTxt = itemView.findViewById(R.id.item_goal_tv_date);
-            this.timeTxt = itemView.findViewById(R.id.item_goal_tv_time);
-            this.durationTxt = itemView.findViewById(R.id.item_goal_tv_duration);
-            this.checkInBtn = itemView.findViewById(R.id.item_goal_btn_check_in);
+            this.locationTxt = itemView.findViewById(R.id.goal_txt_location);
+            this.dateTxt = itemView.findViewById(R.id.goal_txt_date);
+            this.startTimeTxt = itemView.findViewById(R.id.goal_txt_start_time);
+            this.endTimeTxt = itemView.findViewById(R.id.goal_txt_end_time);
+            this.statusTxt = itemView.findViewById(R.id.goal_txt_status);
         }
     }
 }

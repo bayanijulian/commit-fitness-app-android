@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala.ui;
+package com.bayanijulian.glasskoala.view.profile;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,39 +6,51 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+
 import com.bayanijulian.glasskoala.R;
-import com.bayanijulian.glasskoala.database.DatabaseIO;
+import com.bayanijulian.glasskoala.database.UserIO;
+import com.bayanijulian.glasskoala.model.User;
+
+import com.bayanijulian.glasskoala.view.SignInActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
-public class ProfileDetailActivity extends AppCompatActivity {
-    private static final String TAG = ProfileDetailActivity.class.getSimpleName();
+public class ProfileSettingsActivity extends AppCompatActivity {
+    public static final String TAG = ProfileSettingsActivity.class.getSimpleName();
     private static final int RC_PICK_IMAGE = 431;
 
     private Button profileImgBtn;
     private TextInputEditText nameInput;
     private Button saveBtn;
-    private FirebaseUser currentUser;
+    private User currentUser;
     private ImageView profileImg;
     private Uri newImageData;
+    private Button logoutBtn;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_detail);
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        nameInput = findViewById(R.id.activity_profile_detail_input_name);
-        profileImg = findViewById(R.id.activity_profile_detail_img_profile);
+        setContentView(R.layout.activity_profile_settings);
 
-        profileImgBtn = findViewById(R.id.activity_profile_detail_btn_image);
+        // gets the currentUser from the calling activity
+        Intent fromActivity = getIntent();
+        currentUser = fromActivity.getParcelableExtra(User.LABEL);
+
+        nameInput = findViewById(R.id.activity_profile_settings_input_name);
+        nameInput.setText(currentUser.getName());
+
+        profileImg = findViewById(R.id.activity_profile_settings_img_profile);
+        Picasso.get().load(currentUser.getProfileImg()).noPlaceholder().into(profileImg);
+
+        profileImgBtn = findViewById(R.id.activity_profile_settings_btn_image);
         profileImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,13 +58,28 @@ public class ProfileDetailActivity extends AppCompatActivity {
             }
         });
 
-        saveBtn = findViewById(R.id.activity_profile_detail_btn_save);
+        saveBtn = findViewById(R.id.activity_profile_settings_btn_save);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Save button pressed.");
                 updateUser();
             }
         });
+
+        logoutBtn = findViewById(R.id.activity_profile_settings_btn_logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Logging out currentUser.");
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(v.getContext(), SignInActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        toolbar = findViewById(R.id.activity_profile_settings_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -83,19 +110,21 @@ public class ProfileDetailActivity extends AppCompatActivity {
 
     private void updateUser() {
         if (nameInput.getText() != null) {
+            Log.d(TAG, "Checking name...");
             String newName = nameInput.getText().toString();
             if (!newName.isEmpty()) {
-                DatabaseIO.getUserIO().updateName(newName);
+                Log.d(TAG, "Updating name...");
+                UserIO.updateName(currentUser);
             }
         }
         if (newImageData != null) {
-            DatabaseIO.getUserIO().updateProfileImg(newImageData);
+            UserIO.updateProfileImg(currentUser, newImageData);
         }
-        // kills the activity and should go back to the last activity
+        // go back to main activity
         finish();
     }
 
     private void loadImage(Uri imageData) {
-        Picasso.get().load(imageData).into(profileImg);
+        Picasso.get().load(imageData).noPlaceholder().into(profileImg);
     }
 }

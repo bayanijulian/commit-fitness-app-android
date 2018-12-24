@@ -1,4 +1,4 @@
-package com.bayanijulian.glasskoala.ui;
+package com.bayanijulian.glasskoala.view.goal;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

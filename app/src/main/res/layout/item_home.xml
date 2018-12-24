@@ -1,62 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginRight="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
+    card_view:cardCornerRadius="4dp"
+    >
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/item_user_cv"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="12dp"
-        card_view:cardCornerRadius="4dp">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+        android:padding="16dp">
 
 
-            <com.github.abdularis.civ.AvatarImageView
-                android:id="@+id/item_user_img_profile"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_avatar_large"
-                android:scaleType="center"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/colorAccent"
-                app:avatarBackgroundColor="@color/colorPrimary"
-                app:state="IMAGE"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
+        <com.github.abdularis.civ.AvatarImageView
+            android:id="@+id/item_home_img_profile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_avatar_large"
+            app:avatarBackgroundColor="@color/colorPrimary"
+            app:state="IMAGE"
+            app:strokeColor="@color/colorAccent"
+            app:strokeWidth="1dp"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/item_user_tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                card_view:layout_constraintBottom_toBottomOf="@+id/item_user_img_profile"
-                card_view:layout_constraintStart_toEndOf="@+id/item_user_img_profile"
-                card_view:layout_constraintTop_toTopOf="@+id/item_user_img_profile" />
+        <TextView
+            android:id="@+id/item_home_txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Bayani Julian"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            app:layout_constraintBottom_toBottomOf="@+id/item_home_img_profile"
+            app:layout_constraintStart_toEndOf="@+id/item_home_img_profile"
+            app:layout_constraintTop_toTopOf="@+id/item_home_img_profile" />
 
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:max="100"
-                android:progress="33"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@+id/item_user_img_profile" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+        <TextView
+            android:id="@+id/item_home_txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="6:55 PM"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="@+id/item_home_txt_name" />
+
+        <TextView
+            android:id="@+id/item_home_txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Just started working out!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            app:layout_constraintStart_toStartOf="@+id/item_home_img_profile"
+            app:layout_constraintTop_toBottomOf="@+id/item_home_img_profile" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
+

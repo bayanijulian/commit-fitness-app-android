@@ -42,4 +42,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.abdularis:CircularImageView:v1.2'
 
+
 }

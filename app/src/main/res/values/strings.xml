@@ -6,4 +6,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="logout">Logout</string>
+    <string name="next_goal">Next Goal</string>
+    <string name="unfollow">unfollow</string>
+    <string name="follow">Follow</string>
 </resources>
