@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.bayanijulian.glasskoala.R;
+import com.bayanijulian.glasskoala.SignUpActivity;
 import com.bayanijulian.glasskoala.database.DatabaseIO;
 import com.bayanijulian.glasskoala.database.UserIO;
 import com.bayanijulian.glasskoala.model.User;
@@ -27,6 +28,7 @@ public class SignInActivity extends AppCompatActivity {
     private static final String TAG = SignInActivity.class.getSimpleName();
 
     private Button loginBtn;
+    private Button signUpBtn;
     private EditText emailInput;
     private EditText passwordInput;
     private FirebaseUser currentUser;
@@ -50,6 +52,19 @@ public class SignInActivity extends AppCompatActivity {
                 authenticate();
             }
         });
+
+        signUpBtn = findViewById(R.id.activity_sign_in_btn_sign_up);
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSignUpActivity();
+            }
+        });
+    }
+
+    private void startSignUpActivity() {
+        Intent signUpActivity = new Intent(this, SignUpActivity.class);
+        startActivity(signUpActivity);
     }
 
     /**
@@ -64,7 +79,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Login success");
-                    loadUser();
+                    verifyCurrentUser();
                 } else {
                     updateUIFailedLogin();
                 }

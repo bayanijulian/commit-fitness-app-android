@@ -34,7 +34,8 @@
         <activity android:name=".view.CreateGroupActivity" />
         <activity android:name=".view.main.MainActivity" />
         <activity android:name=".view.profile.ProfileSettingsActivity" />
-        <activity android:name=".view.goal.GoalsActivity"></activity>
+        <activity android:name=".view.goal.GoalsActivity" />
+        <activity android:name=".SignUpActivity"></activity>
     </application>
 
 </manifest>

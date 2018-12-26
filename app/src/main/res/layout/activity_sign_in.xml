@@ -22,13 +22,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.20999998" />
 
     <EditText
         android:id="@+id/activity_sign_et_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_sign_in_btn_login" />
 
     <Button
-        android:id="@+id/button2activity_sign_in_btn_sign_up"
+        android:id="@+id/activity_sign_in_btn_sign_up"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
