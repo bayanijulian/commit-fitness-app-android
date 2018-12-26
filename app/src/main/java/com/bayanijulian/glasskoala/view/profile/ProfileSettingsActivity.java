@@ -50,6 +50,13 @@ public class ProfileSettingsActivity extends AppCompatActivity {
         profileImg = findViewById(R.id.activity_profile_settings_img_profile);
         Picasso.get().load(currentUser.getProfileImg()).noPlaceholder().into(profileImg);
 
+        profileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+
         profileImgBtn = findViewById(R.id.activity_profile_settings_btn_image);
         profileImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override

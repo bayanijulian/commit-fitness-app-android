@@ -121,7 +121,11 @@ public class SignInActivity extends AppCompatActivity {
     /**
      * Loads the user to our model, to send to the main activity as a parcelable
      */
+
+
     private void loadUser() {
+
+        updateUser();
         UserIO.get(FirebaseFirestore.getInstance(), currentUser, new DatabaseIO.SingleListener<User>() {
             @Override
             public void onComplete(User data) {
